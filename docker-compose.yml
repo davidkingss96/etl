@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: dockerfile
+    container_name: etl-app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /app
+    networks:
+      - app-network
+    ports:
+      - "83:80"
+  db:
+    image: mysql
+    container_name: etl-mysql
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - etl:/var/lib/mysql/
+    environment:
+      MYSQL_DATABASE: etl
+      MYSQL_ROOT_PASSWORD: 123456789
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  etl:
+    driver: local
