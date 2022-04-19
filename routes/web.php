@@ -20,6 +20,8 @@ Route::get('/', function () {
 
 Route::resource("clientes", ClienteController::class);
 
+Route::patch("clientes-test", [ClienteController::class, 'update'])->name('clientes-test');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

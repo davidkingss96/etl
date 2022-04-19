@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CSVController;
+use App\Http\Controllers\TXTController;
 
 /**
  * Class ClienteController
@@ -22,8 +23,10 @@ class ClienteController extends Controller
         $clientesMysql = Cliente::get()->toArray();
 
         $clientesCSV = CSVController::leerClientes();
+
+        $clientesTXT = TXTController::leerClientes();
         
-        $clientes = array_merge($clientesCSV, $clientesMysql);
+        $clientes = array_merge($clientesCSV, $clientesTXT, $clientesMysql);
 
         return view('cliente.index', compact('clientes'));
     }
@@ -52,6 +55,8 @@ class ClienteController extends Controller
             $cliente = Cliente::create($request->all());
         }else if($request->origen == "csv"){
             CSVController::crearCliente($request->all());
+        }else if($request->origen == "txt"){
+            TXTController::crearCliente($request->all());
         }
 
         return redirect()->route('clientes.index')
@@ -72,7 +77,7 @@ class ClienteController extends Controller
             if($origen == "csv"){
                 $cliente = CSVController::verCliente($id);
             }else if($origen == "txt"){
-                return "Leer como TXT";
+                $cliente = TXTController::verCliente($id);
             }
         }else{
             $cliente = Cliente::find($id);
@@ -96,7 +101,7 @@ class ClienteController extends Controller
             if($origen == "csv"){
                 $cliente = CSVController::verCliente($id);
             }else if($origen == "txt"){
-                return "Leer como TXT";
+                $cliente = TXTController::verCliente($id);
             }
         }else{
             $cliente = Cliente::find($id);
@@ -122,7 +127,7 @@ class ClienteController extends Controller
             if($origen == "csv"){
                 CSVController::editarCliente($request->all());
             }else if($origen == "txt"){
-                return "Leer como TXT";
+                TXTController::editarCliente($request->all());
             }
         }else{
             $cliente->update($request->all());
@@ -145,7 +150,7 @@ class ClienteController extends Controller
             if($origen == "csv"){
                 $cliente = CSVController::updateDeleteRow($id);
             }else if($origen == "txt"){
-                return "Leer como TXT";
+                $cliente = TXTController::updateDeleteRow($id);
             }
         }else{
             $cliente = Cliente::find($id)->delete();
