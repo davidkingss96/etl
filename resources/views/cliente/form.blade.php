@@ -1,7 +1,7 @@
 <div class="box box-info padding-1">
     <div class="box-body">
         <div style="display:none">
-            {{Form::text('id', $cliente->id)}}
+            {{Form::text('id', $cliente->id, ['id' => 'id'])}}
         </div>
         <div class="form-group">
             {{ Form::label('identificacion') }}
@@ -20,8 +20,10 @@
         </div>
         <div class="form-group">
             {{ Form::label('genero') }}
-            {{ Form::text('genero', $cliente->genero, ['class' => 'form-control' . ($errors->has('genero') ? ' is-invalid' : ''), 'placeholder' => 'Genero']) }}
-            {!! $errors->first('genero', '<div class="invalid-feedback">:message</div>') !!}
+            <select class="form-select" aria-label="Default select example" name="genero" id="genero">
+                <option value="Macho">Macho</option>
+                <option value="Hembra">Hembra</option>
+            </select>
         </div>
         <div class="form-group">
             {{ Form::label('fecha-nacimiento') }}

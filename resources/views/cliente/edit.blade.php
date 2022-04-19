@@ -23,6 +23,32 @@
                             @include('cliente.form')
 
                         </form>
+                        <script>
+                        var origen = (document.getElementById("id").value).split("-");
+                        
+                        if(origen[1] == "csv"){
+                            updateSelect("Hombre", "Mujer");
+                        }else if(origen[1] == "txt"){
+                            updateSelect("Masculino", "Femenino");
+                        }
+
+                        function updateSelect(h, m){
+                            var selectobject = document.getElementById("genero");
+                            removeOptions(selectobject)
+                            var option = new Option(h, h);
+                            var option1 = new Option(m, m);
+                            selectobject.appendChild(option);
+                            selectobject.appendChild(option1);
+                        }
+
+                        function removeOptions(selectElement) {
+                            var i, L = selectElement.options.length - 1;
+                            for(i = L; i >= 0; i--) {
+                                selectElement.remove(i);
+                            }
+                        }
+                            
+                        </script>
                     </div>
                 </div>
             </div>
