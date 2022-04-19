@@ -20,7 +20,7 @@
                             @csrf
                             <div class="form-group">
                                 {{ Form::label('origen') }}
-                                <select class="form-select" aria-label="Default select example" name="origen">
+                                <select class="form-select" aria-label="Default select example" name="origen" id="origen" onchange="updateGeneros()">
                                     <option value="mysql">MySQL</option>
                                     <option value="csv">CSV</option>
                                     <option value="txt">TXT</option>
@@ -30,6 +30,41 @@
                             @include('cliente.form')
 
                         </form>
+
+                        <script>
+                        function updateGeneros(){
+                            var origen = document.getElementById("origen").value;
+                            switch(origen){
+                                case "txt":
+                                    updateSelect("Masculino", "Femenino");
+                                    break;
+                                case "csv":
+                                    updateSelect("Hombre", "Mujer");
+                                    break;
+                                default:
+                                    updateSelect("Macho", "Hembra");
+                                    break;
+                            }
+                        }
+
+                        function updateSelect(h, m){
+                            var selectobject = document.getElementById("genero");
+                            removeOptions(selectobject)
+                            var option = new Option(h, h);
+                            var option1 = new Option(m, m);
+                            selectobject.appendChild(option);
+                            selectobject.appendChild(option1);
+                        }
+
+                        function removeOptions(selectElement) {
+                            var i, L = selectElement.options.length - 1;
+                            for(i = L; i >= 0; i--) {
+                                selectElement.remove(i);
+                            }
+                        }
+                            
+                        </script>
+
                     </div>
                 </div>
             </div>

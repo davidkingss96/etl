@@ -6,6 +6,7 @@ use App\Models\Cliente;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CSVController;
 use App\Http\Controllers\TXTController;
+use App\Http\Controllers\Clientes;
 
 /**
  * Class ClienteController
@@ -27,6 +28,8 @@ class ClienteController extends Controller
         $clientesTXT = TXTController::leerClientes();
         
         $clientes = array_merge($clientesCSV, $clientesTXT, $clientesMysql);
+
+        $clientes = Clientes::agregarEdad($clientes);
 
         return view('cliente.index', compact('clientes'));
     }
@@ -51,6 +54,8 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         request()->validate(Cliente::$rules);
+        $request->request->set('nombre', strtoupper($request->nombre));
+        $request->request->set('apellido', strtoupper($request->apellido));
         if($request->origen == "mysql"){
             $cliente = Cliente::create($request->all());
         }else if($request->origen == "csv"){
@@ -120,7 +125,8 @@ class ClienteController extends Controller
     public function update(Request $request, Cliente $cliente)
     {
         request()->validate(Cliente::$rules);
-
+        $request->request->set('nombre', strtoupper($request->nombre));
+        $request->request->set('apellido', strtoupper($request->apellido));
         if(str_contains($request->id, "-")){
             $idExplode = explode("-", $request->id);
             $origen = $idExplode[1];

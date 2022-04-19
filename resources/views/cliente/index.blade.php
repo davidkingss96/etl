@@ -40,6 +40,8 @@
 										<th>Apellido</th>
 										<th>Genero</th>
 										<th>Fecha-Nacimiento</th>
+										<th>Edad</th>
+										<th>Clasificacion</th>
 										<th>Origen</th>
 
                                         <th></th>
@@ -53,7 +55,9 @@
 											<td>{{ $cliente["nombre"] }}</td>
 											<td>{{ $cliente["apellido"] }}</td>
 											<td>{{ $cliente["genero"] }}</td>
-											<td>{{ $cliente["fecha-nacimiento"] }}</td>
+											<td>{{ explode(" ", $cliente["fecha-nacimiento"])[0] }}</td>
+											<td>{{ $cliente["edad"] }}</td>
+											<td>{{ $cliente["clasificacion"] }}</td>
 											<td>{{ isset($cliente["origen"]) ? $cliente["origen"] : "MySQL" }}</td>
 
                                             <td>
