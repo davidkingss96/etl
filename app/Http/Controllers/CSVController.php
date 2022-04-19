@@ -51,6 +51,7 @@ class CSVController extends Controller
             unset($fields["origen"]);
             if($first){
                 fputcsv($fp, array_keys($fields));
+                $first = false;
             }
             fputcsv($fp, $fields);
         }
@@ -79,6 +80,7 @@ class CSVController extends Controller
             unset($fields["origen"]);
             if($first){
                 fputcsv($fp, array_keys($fields));
+                $first = false;
             }
             fputcsv($fp, $fields);
         }

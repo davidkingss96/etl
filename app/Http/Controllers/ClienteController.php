@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CSVController;
+use App\Http\Controllers\TXTController;
 
 /**
  * Class ClienteController
@@ -22,8 +23,10 @@ class ClienteController extends Controller
         $clientesMysql = Cliente::get()->toArray();
 
         $clientesCSV = CSVController::leerClientes();
+
+        $clientesTXT = TXTController::leerClientes();
         
-        $clientes = array_merge($clientesCSV, $clientesMysql);
+        $clientes = array_merge($clientesCSV, $clientesTXT, $clientesMysql);
 
         return view('cliente.index', compact('clientes'));
     }
@@ -52,6 +55,8 @@ class ClienteController extends Controller
             $cliente = Cliente::create($request->all());
         }else if($request->origen == "csv"){
             CSVController::crearCliente($request->all());
+        }else if($request->origen == "txt"){
+            TXTController::crearCliente($request->all());
         }
 
         return redirect()->route('clientes.index')
