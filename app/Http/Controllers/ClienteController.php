@@ -136,7 +136,14 @@ class ClienteController extends Controller
                 TXTController::editarCliente($request->all());
             }
         }else{
-            $cliente->update($request->all());
+            $data = $request->all();
+            $cliente = Cliente::find($request->id);
+            $cliente->identificacion = $request->identificacion;
+            $cliente->nombre = $request->nombre;
+            $cliente->apellido = $request->apellido;
+            $cliente->genero = $request->genero;
+            $cliente->{'fecha-nacimiento'} = $request->{'fecha-nacimiento'};
+            $cliente->save();
         }
 
         return redirect()->route('clientes.index')
