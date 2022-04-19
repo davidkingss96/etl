@@ -27,8 +27,25 @@ class TXTController extends Controller
         return $max + 1;
     }
 
+    public function updateDeleteRow($id){
+        $csv = new TXTController;
+        $dataSinFila = $csv->deleteRow($id);
+        $fp = fopen(storage_path('app/public/Clients.txt'), 'w');
+        $first = true;
+        foreach ($dataSinFila as $fields) {
+            unset($fields["origen"]);
+            if($first){
+                fwrite($fp, implode("|", array_keys($fields)));
+                fwrite ($fp, "\n");
+                $first = false;
+            }
+            fwrite($fp, implode("|", $fields));
+            fwrite ($fp, "\n");
+        }
+    }
+
     public function editarCliente($data){
-        $txt = new CSVController;
+        $txt = new TXTController;
         $dataSinFila = $txt->deleteRow($data["id"]);
         unset($data["_method"]);
         unset($data["_token"]);
@@ -37,8 +54,22 @@ class TXTController extends Controller
         foreach ($dataSinFila as $fields) {
             unset($fields["origen"]);
             fwrite($fp, implode("|", $fields));
+            fwrite ($fp, "\n");
         }
     }
+
+    public function deleteRow($id){
+        $txt = new TXTController;
+        $data = $txt->leerClientes();
+        $data2 = array();
+        foreach($data as $row){
+            if($row["id"] != $id){
+                array_push($data2, $row);
+            }
+        }
+        return $data2;
+    }
+
 
     public function verCliente($id){
         $txt = new TXTController;

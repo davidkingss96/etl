@@ -77,7 +77,7 @@ class ClienteController extends Controller
             if($origen == "csv"){
                 $cliente = CSVController::verCliente($id);
             }else if($origen == "txt"){
-                return "Leer como TXT";
+                $cliente = TXTController::verCliente($id);
             }
         }else{
             $cliente = Cliente::find($id);
@@ -101,7 +101,7 @@ class ClienteController extends Controller
             if($origen == "csv"){
                 $cliente = CSVController::verCliente($id);
             }else if($origen == "txt"){
-                return "Leer como TXT";
+                $cliente = TXTController::verCliente($id);
             }
         }else{
             $cliente = Cliente::find($id);
@@ -127,7 +127,7 @@ class ClienteController extends Controller
             if($origen == "csv"){
                 CSVController::editarCliente($request->all());
             }else if($origen == "txt"){
-                return "Leer como TXT";
+                TXTController::editarCliente($request->all());
             }
         }else{
             $cliente->update($request->all());
@@ -150,7 +150,7 @@ class ClienteController extends Controller
             if($origen == "csv"){
                 $cliente = CSVController::updateDeleteRow($id);
             }else if($origen == "txt"){
-                return "Leer como TXT";
+                $cliente = TXTController::updateDeleteRow($id);
             }
         }else{
             $cliente = Cliente::find($id)->delete();
