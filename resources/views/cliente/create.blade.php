@@ -18,6 +18,14 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('clientes.store') }}"  role="form" enctype="multipart/form-data">
                             @csrf
+                            <div class="form-group">
+                                {{ Form::label('origen') }}
+                                <select class="form-select" aria-label="Default select example" name="origen">
+                                    <option value="mysql">MySQL</option>
+                                    <option value="csv">CSV</option>
+                                    <option value="txt">TXT</option>
+                                </select>
+                            </div>
 
                             @include('cliente.form')
 

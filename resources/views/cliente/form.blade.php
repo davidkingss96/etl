@@ -1,6 +1,8 @@
 <div class="box box-info padding-1">
     <div class="box-body">
-        
+        <div style="display:none">
+            {{Form::text('id', $cliente->id)}}
+        </div>
         <div class="form-group">
             {{ Form::label('identificacion') }}
             {{ Form::text('identificacion', $cliente->identificacion, ['class' => 'form-control' . ($errors->has('identificacion') ? ' is-invalid' : ''), 'placeholder' => 'Identificacion']) }}
@@ -23,7 +25,7 @@
         </div>
         <div class="form-group">
             {{ Form::label('fecha-nacimiento') }}
-            {{ Form::date('fecha-nacimiento', $cliente->{"fecha-nacimiento"}, ['class' => 'form-control' . ($errors->has('fecha-nacimiento') ? ' is-invalid' : ''), 'placeholder' => 'Fecha-Nacimiento']) }}
+            {{ Form::date('fecha-nacimiento', $cliente->{"fecha-nacimiento"}, ['class' => 'form-control' . ($errors->has('fecha-nacimiento') ? ' is-invalid' : '')]) }}
             {!! $errors->first('fecha-nacimiento', '<div class="invalid-feedback">:message</div>') !!}
         </div>
 

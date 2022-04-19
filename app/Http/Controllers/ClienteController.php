@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use Illuminate\Http\Request;
+use App\Http\Controllers\CSVController;
 
 /**
  * Class ClienteController
@@ -18,10 +19,13 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        $clientes = Cliente::paginate();
+        $clientesMysql = Cliente::get()->toArray();
 
-        return view('cliente.index', compact('clientes'))
-            ->with('i', (request()->input('page', 1) - 1) * $clientes->perPage());
+        $clientesCSV = CSVController::leerClientes();
+        
+        $clientes = array_merge($clientesCSV, $clientesMysql);
+
+        return view('cliente.index', compact('clientes'));
     }
 
     /**
@@ -44,8 +48,11 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         request()->validate(Cliente::$rules);
-
-        $cliente = Cliente::create($request->all());
+        if($request->origen == "mysql"){
+            $cliente = Cliente::create($request->all());
+        }else if($request->origen == "csv"){
+            CSVController::crearCliente($request->all());
+        }
 
         return redirect()->route('clientes.index')
             ->with('success', 'Cliente created successfully.');
@@ -59,7 +66,18 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        $cliente = Cliente::find($id);
+        if(str_contains($id, "-")){
+            $idExplode = explode("-", $id);
+            $origen = $idExplode[1];
+            if($origen == "csv"){
+                $cliente = CSVController::verCliente($id);
+            }else if($origen == "txt"){
+                return "Leer como TXT";
+            }
+        }else{
+            $cliente = Cliente::find($id);
+        }
+        
 
         return view('cliente.show', compact('cliente'));
     }
@@ -72,7 +90,17 @@ class ClienteController extends Controller
      */
     public function edit($id)
     {
-        $cliente = Cliente::find($id);
+        if(str_contains($id, "-")){
+            $idExplode = explode("-", $id);
+            $origen = $idExplode[1];
+            if($origen == "csv"){
+                $cliente = CSVController::verCliente($id);
+            }else if($origen == "txt"){
+                return "Leer como TXT";
+            }
+        }else{
+            $cliente = Cliente::find($id);
+        }
 
         return view('cliente.edit', compact('cliente'));
     }
@@ -88,7 +116,17 @@ class ClienteController extends Controller
     {
         request()->validate(Cliente::$rules);
 
-        $cliente->update($request->all());
+        if(str_contains($request->id, "-")){
+            $idExplode = explode("-", $request->id);
+            $origen = $idExplode[1];
+            if($origen == "csv"){
+                CSVController::editarCliente($request->all());
+            }else if($origen == "txt"){
+                return "Leer como TXT";
+            }
+        }else{
+            $cliente->update($request->all());
+        }
 
         return redirect()->route('clientes.index')
             ->with('success', 'Cliente updated successfully');
@@ -101,7 +139,17 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        $cliente = Cliente::find($id)->delete();
+        if(str_contains($id, "-")){
+            $idExplode = explode("-", $id);
+            $origen = $idExplode[1];
+            if($origen == "csv"){
+                $cliente = CSVController::updateDeleteRow($id);
+            }else if($origen == "txt"){
+                return "Leer como TXT";
+            }
+        }else{
+            $cliente = Cliente::find($id)->delete();
+        }
 
         return redirect()->route('clientes.index')
             ->with('success', 'Cliente deleted successfully');

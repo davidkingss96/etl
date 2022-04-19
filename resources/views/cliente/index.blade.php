@@ -34,13 +34,13 @@
                             <table class="table table-striped table-hover">
                                 <thead class="thead">
                                     <tr>
-                                        <th>No</th>
                                         
 										<th>Identificacion</th>
 										<th>Nombre</th>
 										<th>Apellido</th>
 										<th>Genero</th>
 										<th>Fecha-Nacimiento</th>
+										<th>Origen</th>
 
                                         <th></th>
                                     </tr>
@@ -48,18 +48,18 @@
                                 <tbody>
                                     @foreach ($clientes as $cliente)
                                         <tr>
-                                            <td>{{ ++$i }}</td>
                                             
-											<td>{{ $cliente->identificacion }}</td>
-											<td>{{ $cliente->nombre }}</td>
-											<td>{{ $cliente->apellido }}</td>
-											<td>{{ $cliente->genero }}</td>
-											<td>{{ $cliente->{"fecha-nacimiento"} }}</td>
+											<td>{{ $cliente["identificacion"] }}</td>
+											<td>{{ $cliente["nombre"] }}</td>
+											<td>{{ $cliente["apellido"] }}</td>
+											<td>{{ $cliente["genero"] }}</td>
+											<td>{{ $cliente["fecha-nacimiento"] }}</td>
+											<td>{{ isset($cliente["origen"]) ? $cliente["origen"] : "MySQL" }}</td>
 
                                             <td>
-                                                <form action="{{ route('clientes.destroy',$cliente->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('clientes.show',$cliente->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('clientes.edit',$cliente->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+                                                <form action="{{ route('clientes.destroy',$cliente['id']) }}" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('clientes.show',$cliente['id']) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('clientes.edit',$cliente['id']) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
@@ -72,7 +72,6 @@
                         </div>
                     </div>
                 </div>
-                {!! $clientes->links() !!}
             </div>
         </div>
     </div>
